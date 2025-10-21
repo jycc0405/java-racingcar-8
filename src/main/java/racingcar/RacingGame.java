@@ -1,6 +1,7 @@
 package racingcar;
 
 import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,8 @@ public class RacingGame {
         String[] carNames = carNamesInput.split(",");
         for (int i = 0; i < carNames.length; i++) {
             carNames[i] = carNames[i].trim();
-            if (carNames[i].isEmpty() || carNames[i].length() > 5) {
-                throw new IllegalArgumentException("자동차 이름이 비었거나 5자를 초과했습니다.");
+            if (carNames[i].isEmpty() || carNames[i].length() > 5 || carNames[i].contains(" ")) {
+                throw new IllegalArgumentException("자동차 이름 양식이 잘못되었습니다.");
             }
             carList.add(new Car(carNames[i]));
         }
@@ -41,17 +42,42 @@ public class RacingGame {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("숫자 형식이 아닙니다");
         }
+
+        System.out.println();
+    }
+
+    public void play() {
+        System.out.println("실행 결과");
+
+        for (int i = 0; i < round; ++i) {
+            for (Car car : carList) {
+                car.tryMove();
+                car.printCarProgress();
+            }
+            System.out.println();
+        }
     }
 
     public static class Car {
         private String name;
+        private Integer distance = 0;
 
         public Car(String name) {
             this.name = name;
         }
 
-        public String getName(){
+        public String getName() {
             return name;
+        }
+
+        public void tryMove() {
+            if (Randoms.pickNumberInRange(0, 9) >= 4) {
+                ++distance;
+            }
+        }
+
+        public void printCarProgress() {
+            System.out.println(name + " : " + "-".repeat(distance));
         }
     }
 }
