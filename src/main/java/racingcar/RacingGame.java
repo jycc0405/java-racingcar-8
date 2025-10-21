@@ -5,6 +5,7 @@ import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RacingGame {
 
@@ -58,6 +59,15 @@ public class RacingGame {
         }
     }
 
+    public void printResult() {
+        Integer maxDistance = carList.stream().mapToInt(Car::getDistance).max().orElse(0);
+        List<Car> winners = carList.stream().filter(car -> car.getDistance() == maxDistance).toList();
+
+        String winnerNames = winners.stream().map(Car::getName).collect(Collectors.joining(", "));
+
+        System.out.println("최종 우승자 : " + winnerNames);
+    }
+
     public static class Car {
         private String name;
         private Integer distance = 0;
@@ -78,6 +88,10 @@ public class RacingGame {
 
         public void printCarProgress() {
             System.out.println(name + " : " + "-".repeat(distance));
+        }
+
+        public Integer getDistance() {
+            return distance;
         }
     }
 }
