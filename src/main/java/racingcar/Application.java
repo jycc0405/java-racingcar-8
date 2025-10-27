@@ -16,7 +16,7 @@ public class Application {
             throw new IllegalArgumentException("입력이 비어있습니다.");
         }
 
-        String[] carNames = carNamesInput.split(",");
+        String[] carNames = carNamesInput.split(",",-1);
         int round;
         try {
             round = Integer.parseInt(roundInput.trim());
